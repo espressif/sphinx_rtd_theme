@@ -1,6 +1,8 @@
-**************************
-Read the Docs Sphinx Theme
-**************************
+********************
+ESP-IDF Sphinx Theme
+********************
+
+**This is a fork of sphinx-rtd-theme by Read The Docs. This fork is used by the ESP-IDF Programming Guide. Espressif forked this theme when we moved ESP-IDF Programming Guide away from Read The Docs' hosted service and needed some functionality that neither RTD nor the theme could provide out of the box.**
 
 .. image:: https://img.shields.io/pypi/v/sphinx_rtd_theme.svg
    :target: https://pypi.python.org/pypi/sphinx_rtd_theme
@@ -38,18 +40,18 @@ your ``conf.py`` file:
 
 .. code:: python
 
-    import sphinx_rtd_theme
+    import sphinx_idf_theme
 
     extensions = [
         ...
-        "sphinx_rtd_theme",
+        "sphinx_idf_theme",
     ]
 
-    html_theme = "sphinx_rtd_theme"
+    html_theme = "sphinx_idf_theme"
 
 For more information read the full documentation on `installing the theme`_
 
-.. _PyPI: https://pypi.python.org/pypi/sphinx_rtd_theme
+.. _PyPI: https://pypi.python.org/pypi/sphinx_idf_theme
 .. _installing the theme: https://sphinx-rtd-theme.readthedocs.io/en/latest/installing.html
 
 Configuration
