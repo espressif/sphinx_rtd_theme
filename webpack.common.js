@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    theme: ["./src/theme.js", "./src/sass/theme.sass"],
+      theme: ["./src/theme.js", "./src/sass/theme.sass", "./src/idf_embeds.js"],
     badge_only: "./src/sass/badge_only.sass"
   },
   output: {

@@ -4,6 +4,44 @@ ESP-IDF Sphinx Theme
 
 **This is a fork of sphinx-rtd-theme by Read The Docs. This fork is used by the ESP-IDF Programming Guide. Espressif forked this theme when we moved ESP-IDF Programming Guide away from Read The Docs' hosted service and needed some functionality that neither RTD nor the theme could provide out of the box.**
 
+Notes for ESP-IDF Theme
+=======================
+
+Development Builds
+^^^^^^^^^^^^^^^^^^
+
+This theme must be imported as a Python package **not using html_theme_path**, as it relies on some code in ``__init__.py``. To debug the theme in development, best approach I've found is:
+
+- Run ``python3 setup.py build`` in this directory.
+- In top of IDF docs ``conf_common.py``, add a temporary ``sys.path.append('/path/to/here/build/lib')``.
+- Run IDF docs build, it will import the just-built theme from this directory as a package.
+
+Changes
+^^^^^^^
+
+- New JavaScript file ``idf_embeds.js`` is compiled into ``theme.js``, sets up version footer.
+
+To Use In a Sphinx Project
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set the following additional config variables in the Sphinx project:
+
+- `idf_target` - slug of the IDF target (ie esp32, esp32s2).
+- `idf_targets` - comma-delimited names of all supported IDF targets (ie esp32,esp32s2)
+- `project` - name of the project (normal Sphinx property)
+- `project_slug` - short name of the project as a URL slug (ie `esp-idf`)
+- `versions_url` - URL to download the `versions.js` file from
+
+Versions file
+^^^^^^^^^^^^^
+
+TBD
+
+
+
+Original RTD Theme Docs Follow
+==============================
+
 .. image:: https://img.shields.io/pypi/v/sphinx_rtd_theme.svg
    :target: https://pypi.python.org/pypi/sphinx_rtd_theme
    :alt: Pypi Version
