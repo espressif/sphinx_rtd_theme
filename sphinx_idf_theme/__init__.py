@@ -26,6 +26,8 @@ def setup(app):
 
     app.add_config_value('project_slug', '', 'html')
     app.add_config_value('versions_url', '', 'html')
+    app.add_config_value('project_homepage', '', 'html')
+    app.add_config_value('languages', None, 'html')
 
     # we expect IDF to also add these, but older version may not
     if "idf_target" not in app.config:
@@ -42,5 +44,7 @@ def setup(app):
 
 def inject_template_context(app, pagename, templatename, context, doctree):
     # expose some IDF-specific config in the html_context dict for the theme
-    for key in [ "idf_target", "idf_targets", "project", "project_slug", "versions_url" ]:
+    for key in [ "project_slug", "versions_url", "project_homepage", "languages", "idf_target", "idf_targets", "project" ]:
         context[key] = app.config[key]
+    if bool(app.config.idf_target) != bool(app.config.idf_targets):
+        raise RuntimeError("Either both 'idf_target' and 'idf_targets' variables should be set in Sphinx config, or neither should be set in config.")

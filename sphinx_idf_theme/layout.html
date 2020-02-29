@@ -51,12 +51,16 @@
     into this theme instead of doing this, but it didn't immediately work.)
     #}
     <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = '{{ pagename }}';
         DOCUMENTATION_OPTIONS.PROJECT_SLUG = '{{ project_slug }}';
         DOCUMENTATION_OPTIONS.VERSIONS_URL = '{{ versions_url }}';
-        {%- if idf_target %}
+        {%- if languages %}
+        DOCUMENTATION_OPTIONS.LANGUAGES = {{ languages|tojson }};
+        {%- endif %}
+        {%- if idf_target and idf_targets %}
         DOCUMENTATION_OPTIONS.IDF_TARGET = '{{ idf_target }}';
-        DOCUMENTATION_OPTIONS.IDF_TARGETS = '{{ idf_targets }}'.split(',');
-      {%- endif %}
+        DOCUMENTATION_OPTIONS.IDF_TARGETS = {{ idf_targets|tojson }}
+        {%- endif %}
     </script>
 
     <script type="text/javascript" src="{{ versions_url }}"></script>

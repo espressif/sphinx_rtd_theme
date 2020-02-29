@@ -26,11 +26,12 @@ To Use In a Sphinx Project
 
 Set the following additional config variables in the Sphinx project:
 
-- `idf_target` - slug of the IDF target (ie esp32, esp32s2).
-- `idf_targets` - comma-delimited names of all supported IDF targets (ie esp32,esp32s2)
-- `project` - name of the project (normal Sphinx property)
-- `project_slug` - short name of the project as a URL slug (ie `esp-idf`)
-- `versions_url` - URL to download the `versions.js` file from
+- ``idf_target`` - slug of the IDF target (ie esp32, esp32s2). Optional, but if ``idf_target`` is set then ``idf_targets`` must be set and vice versa. If these two are unset, no "Targets" section is generated in the navigation footer.
+- ``idf_targets`` - Python list with short names of all supported IDF targets (ie ``["esp32", "esp32s2"]``).
+- ``languages`` - Python list with short names of all supported languages (ie ``["en", "zh_CN"]``). If this is unset, no "Languages" section is generated in then navigation footer.
+- ``project_slug`` - short name of the project as a URL slug (ie ``esp-idf``)
+- ``versions_url`` - URL to download the ``versions.js`` file from
+- ``project_homepage`` - URL of the project's main page (GitHub, etc)
 
 Versions file
 ^^^^^^^^^^^^^

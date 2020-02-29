@@ -1,34 +1,79 @@
-{% if READTHEDOCS %}
 {# Add rst-badge after rst-versions for small badge style. #}
-  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      <span class="fa fa-book"> Read the Docs</span>
-      v: {{ current_version }}
-      <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Switch Version </span>
+    v: {{ release|truncate(12) }}
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    {% if idf_targets %}
       <dl>
-        <dt>{{ _('Versions') }}</dt>
-        {% for slug, url in versions %}
-          <dd><a href="{{ url }}">{{ slug }}</a></dd>
+        <dt>{{ _('Targets') }}</dt>
+        {% for slug in idf_targets %}
+          {% if slug == idf_target %}
+            <strong>
+          {% endif %}
+            <dd><a href="{{ pathto('../..', 1) }}/{{ slug }}/{{ version }}/{{ pagename }}.html">{{ slug }}</a></dd>
+          {% if slug == idf_target %}
+            </strong>
+          {% endif %}
+          {% endfor %}
+      </dl>
+    {% endif %}
+    {% if languages %}
+      <dl>
+        <dt>{{ _('Languages') }}</dt>
+        {% for slug in languages %}
+          {% if slug == language %}
+            <strong>
+              {% endif %}
+              {% if idf_targets %}
+              <dd><a href="{{ pathto('../../..', 1) }}/{{ slug }}/{{ idf_target }}/{{ version }}/{{ pagename }}.html">{{ slug }}</a></dd>
+              {% else %}
+              <dd><a href="{{ pathto('../..', 1) }}/{{ slug }}/{{ version }}/{{ pagename }}.html">{{ slug }}</a></dd>
+              {% endif %}
+          {% if slug == language %}
+            </strong>
+          {% endif %}
         {% endfor %}
       </dl>
-      <dl>
-        <dt>{{ _('Downloads') }}</dt>
-        {% for type, url in downloads %}
-          <dd><a href="{{ url }}">{{ type }}</a></dd>
-        {% endfor %}
-      </dl>
-      <dl>
-        {# Translators: The phrase "Read the Docs" is not translated #}
-        <dt>{{ _('On Read the Docs') }}</dt>
-          <dd>
-            <a href="//{{ PRODUCTION_DOMAIN }}/projects/{{ slug }}/?fromdocs={{ slug }}">{{ _('Project Home') }}</a>
-          </dd>
-          <dd>
-            <a href="//{{ PRODUCTION_DOMAIN }}/builds/{{ slug }}/?fromdocs={{ slug }}">{{ _('Builds') }}</a>
-          </dd>
-      </dl>
-    </div>
+    {% endif %}
+    <dl id="versions">
+      <dt>{{ _('Versions') }}</dt>
+      {% if release == "latest" %}
+        <strong>
+      {% endif %}
+      <!-- Latest version URL may not be correct depending on whether that version has different language & idf_targets as part of the URL format compared to this version.
+           JavaScript will update it on page load -->
+      <dd id="version-latest"><a href="{{ pathto('..', 1) }}/latest/{{ pagename }}.html">latest</a></dd>
+      {% if release == "latest" %}
+        </strong>
+      {% endif %}
+
+      <!-- Stable version URL may not be correct depending on whether that version has different language & idf_targets as part of the URL format compared to this version.
+           JavaScript will update it on page load -->
+      <dd id="version-stable"><a href="{{ pathto('..', 1) }}/stable/{{ pagename }}.html">stable</a></dd>
+    </dl>
+    <dl id="versions-prerelease">
+      <dt hidden>{{ _('Prereleases') }}</dt>
+    </dl>
+    <dl id="versions-old">
+      <dt hidden>{{ _('Old Versions') }}</dt>
+    </dl>
+
+    {# TODO - support PDF downloads
+    <dl>
+      <dt>{{ _('Downloads') }}</dt>
+      {% for type, url in downloads %}
+        <dd><a href="{{ url }}">{{ type }}</a></dd>
+      {% endfor %}
+    </dl>
+    #}
+    <dl>
+      <dt>{{ project }}</dt>
+      <dd>
+        <a href="{{ project_homepage }}">{{ _('Project Home') }}</a>
+      </dd>
+    </dl>
   </div>
-{% endif %}
+</div>

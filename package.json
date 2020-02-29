@@ -8,7 +8,9 @@
     "build": "webpack --config webpack.prod.js",
     "preinstall": "bin/preinstall.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "semver": "^7.1.3"
+  },
   "devDependencies": {
     "bourbon": "~4.3",
     "bourbon-neat": "~1.9",
