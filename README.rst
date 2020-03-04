@@ -28,7 +28,7 @@ Set the following additional config variables in the Sphinx project:
 
 - ``idf_target`` - slug of the IDF target (ie esp32, esp32s2). Optional, but if ``idf_target`` is set then ``idf_targets`` must be set and vice versa. If these two are unset, no "Targets" section is generated in the navigation footer.
 - ``idf_targets`` - Python list with short names of all supported IDF targets (ie ``["esp32", "esp32s2"]``).
-- ``languages`` - Python list with short names of all supported languages (ie ``["en", "zh_CN"]``). If this is unset, no "Languages" section is generated in then navigation footer.
+- ``languages`` - Python list with short names of all supported languages (ie ``["en", "zh_CN"]``). Must be set to at least one language element (the current project's language)
 - ``project_slug`` - short name of the project as a URL slug (ie ``esp-idf``)
 - ``versions_url`` - URL to download the ``versions.js`` file from
 - ``project_homepage`` - URL of the project's main page (GitHub, etc)
@@ -36,7 +36,43 @@ Set the following additional config variables in the Sphinx project:
 Versions file
 ^^^^^^^^^^^^^
 
-TBD
+The file found at the ``versions_url`` location should be a JavaScript file describing all current versions. It should take this form:
+
+.. highlight:: javascript
+
+```
+var DOCUMENTATION_VERSIONS = {
+    "DEFAULTS": { "has_targets": false },
+    "VERSIONS": [
+        { "name": "latest", "has_targets": true },
+        { "name": "v4.0" },
+        { "name": "v3.3.1" },
+        { "name": "v3.3", "old": true  },
+        { "name": "v3.2.3" },
+        { "name": "v3.2.2", "old": true },
+        { "name": "v3.1.6" },
+        { "name": "v3.1.5", "old": true },
+        { "name": "v3.0.9", "old": true },
+        { "name": "v4.0-rc", "pre_release": true },
+        { "name": "v4.0-beta2", "pre_release": true },
+        { "name": "release-v4.1", "pre_release": true },
+        { "name": "release-v4.0", "pre_release": true },
+        { "name": "release-v3.3", "pre_release": true },
+        { "name": "release-v3.2", "pre_release": true },
+        { "name": "release-v3.1", "pre_release": true },
+    ]
+};
+```
+
+.. note:: This file is JavaScript so it can be easily included in a script tag, but it's excpected to contain a single assignment statement which assigns the ``DOCUMENTATION_VERSIONS`` variable to a valid JSON object. Doing any other JavaScript computation in this file is invalid.
+
+Inside the ``DOCUMENTATION_VERSIONS`` object:
+
+- ``VERSIONS`` key is a list of versions, where each version is a JSON object with at minimum a ``name`` key which is the version name "slug", and optionally one or more of the following keys:
+  - ``has_targets`` is true if the URLs for these docs have a target element, ie ``<project>/<language>/<target>/<version>``. False if the URL format is ``<project>/<language>/<version>``. A single project can have some versions which include and some which exclude the target URL component.
+  - ``old`` is true if this version is not current, will be shown in "Old Versions" section under the main versions.
+  - ``pre_release`` is true if this version is a prerelease not a stable release, will be shown in "Prereleases" section under  the main versions
+- ``DEFAULTS`` key contains the default values for any keys which are not supplied in an individual ``VERSIONS`` entries. Just exists to make the file more readable.
 
 
 

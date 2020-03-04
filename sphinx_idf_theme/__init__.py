@@ -29,7 +29,7 @@ def setup(app):
     app.add_config_value('project_homepage', '', 'html')
     app.add_config_value('languages', None, 'html')
 
-    # we expect IDF to also add these, but older version may not
+    # we expect IDF to also add these, but older version may not (and the theme supports non-target-aware docs)
     if "idf_target" not in app.config:
         app.add_config_value('idf_target', None, 'env')
     if "idf_targets" not in app.config:
@@ -46,5 +46,10 @@ def inject_template_context(app, pagename, templatename, context, doctree):
     # expose some IDF-specific config in the html_context dict for the theme
     for key in [ "project_slug", "versions_url", "project_homepage", "languages", "idf_target", "idf_targets", "project" ]:
         context[key] = app.config[key]
+
+    if not app.config.languages:
+        raise RuntimeError("The 'languages' config item needs to be set to a list of supported languages (even if just a single element list)")
+    if not app.config.language:
+        raise RuntimeError("The 'language' config item needs to be set to the language in use")
     if bool(app.config.idf_target) != bool(app.config.idf_targets):
         raise RuntimeError("Either both 'idf_target' and 'idf_targets' variables should be set in Sphinx config, or neither should be set in config.")

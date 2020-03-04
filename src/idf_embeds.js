@@ -26,12 +26,9 @@ function setupVersions() {
         /* Find the (relative) base URL for this project, finding a sibling URL will be built as follows:
            <project_base_url>/<language>/<idf_target>/<version>
 
-           (Where language and target path elements are optional depending on if the project/version has these.)
+           (Where 'idf_target' path element are optional depending on if the project has multiple target support)
          */
-        let project_base_url = DOCUMENTATION_OPTIONS.URL_ROOT + "..";
-        if (DOCUMENTATION_OPTIONS.LANGUAGES) {
-            project_base_url += "/..";
-        }
+        let project_base_url = DOCUMENTATION_OPTIONS.URL_ROOT + "../..";
         if (DOCUMENTATION_OPTIONS.IDF_TARGETS) {
             project_base_url += "/..";
         }
@@ -39,10 +36,7 @@ function setupVersions() {
 
         /* Given a version from the list, return the URL to link to it */
         function getVersionUrl(v) {
-            let result = project_base_url;
-            if (v.has_languages) {
-                result += "/" + (language || "en");
-            }
+            let result = project_base_url + "/" + language;
             if (v.has_targets) {
                 result += "/" + (idf_target || "esp32");
             }
@@ -58,7 +52,7 @@ function setupVersions() {
             /* Highlight the stable version if that's what we're looking at */
             $( "#version-stable>a" ).wrap("<strong></strong>");
         } else {
-            /* Rewrite the URL for stable to account for languages/targets in that version */
+            /* Rewrite the URL for stable to account for targets (or not) in that particular version */
             stable = jQuery.extend({}, stable); // clone the version object to make the name 'stable'
             stable.name = "stable";
             $( "#version-stable>a" ).attr("href", getVersionUrl(stable));

@@ -43,14 +43,14 @@
       {% if release == "latest" %}
         <strong>
       {% endif %}
-      <!-- Latest version URL may not be correct depending on whether that version has different language & idf_targets as part of the URL format compared to this version.
+      <!-- Latest version URL may not be correct depending on whether that version has idf_target as part of the URL format compared to this version.
            JavaScript will update it on page load -->
       <dd id="version-latest"><a href="{{ pathto('..', 1) }}/latest/{{ pagename }}.html">latest</a></dd>
       {% if release == "latest" %}
         </strong>
       {% endif %}
 
-      <!-- Stable version URL may not be correct depending on whether that version has different language & idf_targets as part of the URL format compared to this version.
+      <!-- Stable version URL may not be correct depending on whether that version has idf_target as part of the URL format compared to this version.
            JavaScript will update it on page load -->
       <dd id="version-stable"><a href="{{ pathto('..', 1) }}/stable/{{ pagename }}.html">stable</a></dd>
     </dl>
