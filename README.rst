@@ -64,15 +64,15 @@ var DOCUMENTATION_VERSIONS = {
 };
 ```
 
-.. note:: This file is JavaScript so it can be easily included in a script tag, but it's excpected to contain a single assignment statement which assigns the ``DOCUMENTATION_VERSIONS`` variable to a valid JSON object. Doing any other JavaScript computation in this file is invalid.
+.. note:: This file is JavaScript so it can be easily included in a script tag, but it's expected to contain a single assignment statement which assigns the ``DOCUMENTATION_VERSIONS`` variable to a valid JSON object. Doing any other JavaScript computation in this file is invalid.
 
 Inside the ``DOCUMENTATION_VERSIONS`` object:
 
 - ``VERSIONS`` key is a list of versions, where each version is a JSON object with at minimum a ``name`` key which is the version name "slug", and optionally one or more of the following keys:
-  - ``has_targets`` is true if the URLs for these docs have a target element, ie ``<project>/<language>/<target>/<version>``. False if the URL format is ``<project>/<language>/<version>``. A single project can have some versions which include and some which exclude the target URL component.
+  - ``has_targets`` is true if the URLs for these docs have a target element, ie ``<project>/<language>/<version>/<target>``. False if the URL format is ``<project>/<language>/<version>``. A single project can have some versions which include and some which exclude the target URL component, and the theme will try to generate version links that add or drop the ``<target>`` element as applicable.
   - ``old`` is true if this version is not current, will be shown in "Old Versions" section under the main versions.
   - ``pre_release`` is true if this version is a prerelease not a stable release, will be shown in "Prereleases" section under  the main versions
-- ``DEFAULTS`` key contains the default values for any keys which are not supplied in an individual ``VERSIONS`` entries. Just exists to make the file more readable.
+- ``DEFAULTS`` key contains the default values for any keys which are not supplied in an individual version object. This exists as "sugar" to make the file more readable.
 
 
 

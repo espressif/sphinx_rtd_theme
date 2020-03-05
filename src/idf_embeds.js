@@ -24,7 +24,7 @@ function setupVersions() {
         }
 
         /* Find the (relative) base URL for this project, finding a sibling URL will be built as follows:
-           <project_base_url>/<language>/<idf_target>/<version>
+           <project_base_url>/<language>/<version>/<idf_target>
 
            (Where 'idf_target' path element are optional depending on if the project has multiple target support)
          */
@@ -36,11 +36,10 @@ function setupVersions() {
 
         /* Given a version from the list, return the URL to link to it */
         function getVersionUrl(v) {
-            let result = project_base_url + "/" + language;
+            let result = project_base_url + "/" + language + "/" + v.name;
             if (v.has_targets) {
                 result += "/" + (idf_target || "esp32");
             }
-            result += "/" + v.name;
 
             result += "/" + pagename; // add the relative path of this page
 
