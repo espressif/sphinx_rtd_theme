@@ -2,7 +2,7 @@
 ESP-IDF Sphinx Theme
 ********************
 
-**This is a fork of sphinx-rtd-theme by Read The Docs. This fork is used by the ESP-IDF Programming Guide. Espressif forked this theme when we moved ESP-IDF Programming Guide away from Read The Docs' hosted service and needed some functionality that neither RTD nor the theme could provide out of the box.**
+**This is a fork of sphinx-rtd-theme by Read The Docs. This fork is used by the ESP-IDF Programming Guide. Espressif forked this theme when we moved ESP-IDF Programming Guide away from Read The Docs' hosted service and needed some functionality that neither RTD nor the theme provide out of the box.**
 
 Notes for ESP-IDF Theme
 =======================
@@ -10,23 +10,25 @@ Notes for ESP-IDF Theme
 Development Builds
 ^^^^^^^^^^^^^^^^^^
 
-This theme must be imported as a Python package **not using html_theme_path**, as it relies on some code in ``__init__.py``. To debug the theme in development, best approach I've found is:
+This theme must be imported as a Python package **not using Sphinx's html_theme_path option**, as it relies on some code in ``__init__.py``. To debug the theme in development, ``setup.py develop`` doesn't seem to work out of the box (can probably be made to work easily, please update this file if you know the steps). The following hacky approach definitely works:
 
 - Run ``python3 setup.py build`` in this directory.
 - In top of IDF docs ``conf_common.py``, add a temporary ``sys.path.append('/path/to/here/build/lib')``.
 - Run IDF docs build, it will import the just-built theme from this directory as a package.
+- (When changing theme, re-run ``setup.py build``).
 
 Changes
 ^^^^^^^
 
 - New JavaScript file ``idf_embeds.js`` is compiled into ``theme.js``, sets up version footer.
+- Templates for layout & versions.html have been modified.
 
 To Use In a Sphinx Project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set the following additional config variables in the Sphinx project:
 
-- ``idf_target`` - slug of the IDF target (ie esp32, esp32s2). Optional, but if ``idf_target`` is set then ``idf_targets`` must be set and vice versa. If these two are unset, no "Targets" section is generated in the navigation footer.
+- ``idf_target`` - slug of the IDF target (ie esp32, esp32s2). Optional, but either both this option and ``idf_targets`` must be set or neither must be set.
 - ``idf_targets`` - Python list with short names of all supported IDF targets (ie ``["esp32", "esp32s2"]``).
 - ``languages`` - Python list with short names of all supported languages (ie ``["en", "zh_CN"]``). Must be set to at least one language element (the current project's language)
 - ``project_slug`` - short name of the project as a URL slug (ie ``esp-idf``)
@@ -38,33 +40,33 @@ Versions file
 
 The file found at the ``versions_url`` location should be a JavaScript file describing all current versions. It should take this form:
 
-.. highlight:: javascript
 
-```
-var DOCUMENTATION_VERSIONS = {
-    "DEFAULTS": { "has_targets": false },
-    "VERSIONS": [
-        { "name": "latest", "has_targets": true },
-        { "name": "v4.0" },
-        { "name": "v3.3.1" },
-        { "name": "v3.3", "old": true  },
-        { "name": "v3.2.3" },
-        { "name": "v3.2.2", "old": true },
-        { "name": "v3.1.6" },
-        { "name": "v3.1.5", "old": true },
-        { "name": "v3.0.9", "old": true },
-        { "name": "v4.0-rc", "pre_release": true },
-        { "name": "v4.0-beta2", "pre_release": true },
-        { "name": "release-v4.1", "pre_release": true },
-        { "name": "release-v4.0", "pre_release": true },
-        { "name": "release-v3.3", "pre_release": true },
-        { "name": "release-v3.2", "pre_release": true },
-        { "name": "release-v3.1", "pre_release": true },
-    ]
-};
-```
+.. code-block:: javascript
 
-.. note:: This file is JavaScript so it can be easily included in a script tag, but it's expected to contain a single assignment statement which assigns the ``DOCUMENTATION_VERSIONS`` variable to a valid JSON object. Doing any other JavaScript computation in this file is invalid.
+    var DOCUMENTATION_VERSIONS = {
+            "DEFAULTS": { "has_targets": false },
+            "VERSIONS": [
+                { "name": "latest", "has_targets": true },
+                { "name": "v4.0" },
+                { "name": "v3.3.1" },
+                { "name": "v3.3", "old": true  },
+                { "name": "v3.2.3" },
+                { "name": "v3.2.2", "old": true },
+                { "name": "v3.1.6" },
+                { "name": "v3.1.5", "old": true },
+                { "name": "v3.0.9", "old": true },
+                { "name": "v4.0-rc", "pre_release": true },
+                { "name": "v4.0-beta2", "pre_release": true },
+                { "name": "release-v4.1", "pre_release": true },
+                { "name": "release-v4.0", "pre_release": true },
+                { "name": "release-v3.3", "pre_release": true },
+                { "name": "release-v3.2", "pre_release": true },
+                { "name": "release-v3.1", "pre_release": true },
+            ]
+        };
+
+.. note::
+   This file is JavaScript so it can be easily included in a script tag, but in the future it may be parsed elsewhere. Therefore is should contain a single assignment statement which assigns the ``DOCUMENTATION_VERSIONS`` variable to a valid JSON object. Including any other JavaScript computation in this file is invalid.
 
 Inside the ``DOCUMENTATION_VERSIONS`` object:
 
@@ -75,9 +77,8 @@ Inside the ``DOCUMENTATION_VERSIONS`` object:
 - ``DEFAULTS`` key contains the default values for any keys which are not supplied in an individual version object. This exists as "sugar" to make the file more readable.
 
 
-
-Original RTD Theme Docs Follow
-==============================
+Original RTD Theme README
+=========================
 
 .. image:: https://img.shields.io/pypi/v/sphinx_rtd_theme.svg
    :target: https://pypi.python.org/pypi/sphinx_rtd_theme
