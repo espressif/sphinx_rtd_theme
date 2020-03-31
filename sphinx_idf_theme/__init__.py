@@ -28,6 +28,8 @@ def setup(app):
     app.add_config_value('versions_url', '', 'html')
     app.add_config_value('project_homepage', '', 'html')
     app.add_config_value('languages', None, 'html')
+    app.add_config_value('download_url', '', 'html')
+
 
     # we expect IDF to also add these, but older version may not (and the theme supports non-target-aware docs)
     if "idf_target" not in app.config:
@@ -44,9 +46,10 @@ def setup(app):
 
 def inject_template_context(app, pagename, templatename, context, doctree):
     # expose some IDF-specific config in the html_context dict for the theme
-    for key in [ "project_slug", "versions_url", "project_homepage", "languages", "idf_target", "idf_targets", "project"]:
+    for key in [ "project_slug", "versions_url", "project_homepage", "languages", "idf_target", "idf_targets", "project", "pdf_file"]:
         context[key] = app.config[key]
 
+    # Dictonary for converting from idf target slug to a proper title (esp32s2 -> ESP32-S2)
     context["idf_target_title_dict"] = app.config["idf_target_title_dict"]
 
     if not app.config.languages:
