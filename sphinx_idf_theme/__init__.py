@@ -44,8 +44,10 @@ def setup(app):
 
 def inject_template_context(app, pagename, templatename, context, doctree):
     # expose some IDF-specific config in the html_context dict for the theme
-    for key in [ "project_slug", "versions_url", "project_homepage", "languages", "idf_target", "idf_targets", "project" ]:
+    for key in [ "project_slug", "versions_url", "project_homepage", "languages", "idf_target", "idf_targets", "project"]:
         context[key] = app.config[key]
+
+    context["idf_target_title_dict"] = app.config["idf_target_title_dict"]
 
     if not app.config.languages:
         raise RuntimeError("The 'languages' config item needs to be set to a list of supported languages (even if just a single element list)")

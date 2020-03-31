@@ -13,7 +13,7 @@
           {% if target == idf_target %}
             <strong>
           {% endif %}
-            <dd><a href="{{ pathto('../..', 1) }}/{{ release }}/{{ target }}/{{ pagename }}.html">{{ target }}</a></dd>
+            <dd><a href="{{ pathto('../..', 1) }}/{{ release }}/{{ target }}/{{ pagename }}.html">{{ idf_target_title_dict[target] }}</a></dd>
           {% if target == idf_target %}
             </strong>
           {% endif %}
