@@ -87,7 +87,7 @@ class TransifexCommand(distutils.cmd.Command):
 
 setup(
     name='sphinx_idf_theme',
-    version='0.1',
+    version='0.2',
     url='https://github.com/rtfd/sphinx_idf_theme/',
     license='MIT',
     author='Dave Snider, Read the Docs, Inc. & contributors, modified by Espressif Systems (Shanghai) Co Ltd',
