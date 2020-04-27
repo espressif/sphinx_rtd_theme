@@ -14,6 +14,7 @@ This theme must be imported as a Python package **not using Sphinx's html_theme_
 
 - Run ``python3 setup.py build`` in this directory.
 - In top of IDF docs ``conf_common.py``, add a temporary ``sys.path.append('/path/to/here/build/lib')``.
+- Remove ``sphinx_idf_theme==0.X`` from ``doc/requirement.txt``
 - Run IDF docs build, it will import the just-built theme from this directory as a package.
 - (When changing theme, re-run ``setup.py build``).
 
