@@ -18,8 +18,14 @@ This theme must be imported as a Python package **not using Sphinx's html_theme_
 - Run IDF docs build, it will import the just-built theme from this directory as a package.
 - (When changing theme, re-run ``setup.py build``).
 
-Changes
-^^^^^^^
+New Features
+^^^^^^^^^^^^
+
+- Can support a new URL component under the RTD ``project/language/version`` URL standard, so projects can be ``project/language/version/target`` if the project has multiple targets which each have a totally different docs build.
+- Loads the version information in the versions popup using JavaScript on the client (see "Versions file" below). No dynamic webserver support is needed but the popup can be updated without needing to rebuild all versions of the docs.
+
+Technical Changes
+^^^^^^^^^^^^^^^^^
 
 - New JavaScript file ``idf_embeds.js`` is compiled into ``theme.js``, sets up version footer.
 - Templates for layout & versions.html have been modified.
@@ -38,11 +44,15 @@ Set the following additional config variables in the Sphinx project:
 - ``project_homepage`` - URL of the project's main page (GitHub, etc)
 - ``pdf_file`` - URL to the page where the PDF of HTML is stored, relative to the root dir, used for generating the link to download the PDF
 
+- ``version`` - Standard Sphinx variable, holds the comprehensive version number of the project.
+- ``release`` - This should be the "human readable" version of the ``version``. ``release`` is used in URL slugs, and is used to pattern match inside the Versions file. Currently in ESP-IDF docs, ``release`` is generated using similar sanitization rules to RTD (summary: uses the tag name if available, or branch name if available, or falls back to ``version`` otherwise. ``master`` becomes ``latest``, any branch name with a ``/`` in it becomes a ``-``.)
+
 Versions file
 ^^^^^^^^^^^^^
 
-The file found at the ``versions_url`` location should be a JavaScript file describing all current versions. It should take this form:
+The file found at the ``versions_url`` location should be a JavaScript file describing all current versions. It is loaded by JavaScript in the theme and used to build the version switching popup in the bottom left.
 
+The file should take this form:
 
 .. code-block:: javascript
 
@@ -73,10 +83,12 @@ The file found at the ``versions_url`` location should be a JavaScript file desc
 
 Inside the ``DOCUMENTATION_VERSIONS`` object:
 
-- ``VERSIONS`` key is a list of versions, where each version is a JSON object with at minimum a ``name`` key which is the version name "slug", and optionally one or more of the following keys:
-  - ``has_targets`` is true if the URLs for these docs have a target element, ie ``<project>/<language>/<version>/<target>``. False if the URL format is ``<project>/<language>/<version>``. A single project can have some versions which include and some which exclude the target URL component, and the theme will try to generate version links that add or drop the ``<target>`` element as applicable.
+- ``VERSIONS`` key is a list of versions
+- Each version is a JSON object with at minimum a ``name`` key which is the version name "slug" (corresponds to ``release`` config variable).
+- Optionally, one or more of the following keys:
+  - ``has_targets`` is true if the URLs for these docs have a target element, ie ``<project>/<language>/<version>/<target>``. false if the URL format is ``<project>/<language>/<version>``. A single project can have some versions which include and some which exclude the target URL component, and the theme will try to generate version links that add or drop the ``<target>`` element as applicable.
   - ``old`` is true if this version is not current, will be shown in "Old Versions" section under the main versions.
-  - ``pre_release`` is true if this version is a prerelease not a stable release, will be shown in "Prereleases" section under  the main versions
+  - ``pre_release`` is true if this version is a prerelease not a stable release, will be shown in "Prereleases" section under the main versions
 - ``DEFAULTS`` key contains the default values for any keys which are not supplied in an individual version object. This exists as "sugar" to make the file more readable.
 
 
