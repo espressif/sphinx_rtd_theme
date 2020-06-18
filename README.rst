@@ -10,8 +10,9 @@ Notes for ESP-IDF Theme
 Development Builds
 ^^^^^^^^^^^^^^^^^^
 
-This theme must be imported as a Python package **not using Sphinx's html_theme_path option**, as it relies on some code in ``__init__.py``. To debug the theme in development, ``setup.py develop`` doesn't seem to work out of the box (can probably be made to work easily, please update this file if you know the steps). The following hacky approach definitely works:
+This theme must be imported as a Python package **not using Sphinx's html_theme_path option**, as it relies on some code in ``__init__.py``. The ``sphinx_idf_theme`` needs a mixture of Python and JavaScript in order to build. So currently it's necessary install `node.js <https://nodejs.org/en/download/>`_ in order to build it locally. To debug the theme in development, ``setup.py develop`` doesn't seem to work out of the box (can probably be made to work easily, please update this file if you know the steps). The following hacky approach definitely works:
 
+- Run ``npm install`` in this directory.
 - Run ``python3 setup.py build`` in this directory.
 - In top of IDF docs ``conf_common.py``, add a temporary ``sys.path.append('/path/to/here/build/lib')``.
 - Remove ``sphinx_idf_theme==0.X`` from ``doc/requirement.txt``
