@@ -1,0 +1,68 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  # Versioned esp-idf-doc env image to use for all document building jobs
+  ESP_IDF_DOC_ENV_IMAGE: $CI_DOCKER_REGISTRY/esp-idf-doc-env:v5
+  THEME_PATH: $CI_PROJECT_DIR
+  IDF_PATH: $CI_PROJECT_DIR/esp-idf
+  IDF_REPO: ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+
+before_script:
+  # Use CI Tools
+  - curl -sSL ${CIT_LOADER_URL} | sh
+  - source citools/import_functions
+
+build_dist:
+  stage: build
+  image: $ESP_IDF_DOC_ENV_IMAGE
+  tags:
+    - build
+  dependencies: []
+  artifacts:
+    when: always
+    paths:
+      - dist/*
+  script:
+    - npm install
+    - python3 setup.py build
+    - python3 setup.py sdist bdist_wheel
+
+test_dist:
+  stage: test
+  image: $ESP_IDF_DOC_ENV_IMAGE
+  tags:
+    - host_test
+  dependencies:
+    - build_dist
+  artifacts:
+    when: always
+    paths:
+      - $IDF_PATH/docs/_build/*/*/html/*
+    expire_in: 4 days
+  script:
+      # add gitlab ssh key
+    - cit_add_ssh_key "${GITLAB_KEY_PEM}"
+    - git clone "${IDF_REPO}"
+    - cd $IDF_PATH && tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)"
+    - ${IDF_PATH}/tools/ci/multirun_with_pyenv.sh -p 3.6.10 pip install $THEME_PATH/dist/*.whl
+    # Do a test build with build_docs.py to verify that the new package works
+    - $THEME_PATH/ci/build_docs.sh
+
+deploy_dist:
+  stage: deploy
+  image: $ESP_IDF_DOC_ENV_IMAGE
+  tags:
+    - build
+  only:
+    - master
+  when: on_success
+  dependencies:
+    - build_dist
+  script:
+    # Must be run with 3.6.10 env as this is where doc image installed packages
+   - source /opt/pyenv/activate
+   - pyenv global 3.6.10
+   - python $THEME_PATH/ci/deploy_dist.py

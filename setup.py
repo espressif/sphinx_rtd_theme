@@ -13,6 +13,7 @@ import distutils.cmd
 import setuptools.command.build_py
 from io import open
 from setuptools import setup
+import os.path
 
 
 class WebpackBuildCommand(setuptools.command.build_py.build_py):
@@ -84,16 +85,17 @@ class TransifexCommand(distutils.cmd.Command):
         subprocess.run(['tx', 'push', '--source'], check=True)
         subprocess.run(['tx', 'pull'], check=True)
 
+FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='sphinx_idf_theme',
-    version='0.2',
+    version='0.2.0',
     url='https://github.com/rtfd/sphinx_idf_theme/',
     license='MIT',
     author='Dave Snider, Read the Docs, Inc. & contributors, modified by Espressif Systems (Shanghai) Co Ltd',
     author_email='',
     description='IDF theme for Sphinx, based on Read The Docs theme',
-    long_description=open('README.rst', encoding='utf-8').read(),
+    long_description=open(os.path.join(FILE_PATH, 'README.rst'), encoding='utf-8').read(),
     cmdclass={
         'update_translations': UpdateTranslationsCommand,
         'transifex': TransifexCommand,
