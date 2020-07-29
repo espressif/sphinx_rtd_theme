@@ -5,7 +5,7 @@ stages:
 
 variables:
   # Versioned esp-idf-doc env image to use for all document building jobs
-  ESP_IDF_DOC_ENV_IMAGE: $CI_DOCKER_REGISTRY/esp-idf-doc-env:v5
+  ESP_IDF_DOC_ENV_IMAGE: $CI_DOCKER_REGISTRY/esp-idf-doc-env:v7
   THEME_PATH: $CI_PROJECT_DIR
   IDF_PATH: $CI_PROJECT_DIR/esp-idf
   IDF_REPO: ${GITLAB_SSH_SERVER}/idf/esp-idf.git

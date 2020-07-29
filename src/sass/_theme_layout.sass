@@ -209,10 +209,12 @@ html
     &.icon
       img.logo
         margin-top: 0.85em  // space it away from the title text
-  > div.version
+  > div.selectors
     margin-top: -1 * ($gutter / 4)
     margin-bottom: $gutter / 2
     font-weight: normal
+    font-size: 110%
+    line-height: 1.6em
     color: rgba(255,255,255,.3)
 
 
@@ -332,6 +334,13 @@ footer
     background: none
     border: none
     color: $footer-color
+
+  .footer li
+    display: inline-block
+    &.footer-aside
+      float: right
+      display: inline-block
+
 
 .rst-footer-buttons
   &:before, &:after
