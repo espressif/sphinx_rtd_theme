@@ -44,11 +44,20 @@
     </p>
   </div>
 
-  {%- if show_sphinx %}
-    {% set sphinx_web = '<a href="http://sphinx-doc.org/">Sphinx</a>' %}
-    {% set readthedocs_theme = '<a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>'  %}
+  <ul class="footer">
+    {%- if show_sphinx %}
+    <li>
+      {% set sphinx_web = '<a href="http://sphinx-doc.org/">Sphinx</a>' %}
+      {% set readthedocs_theme = '<a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>'  %}
       {% trans sphinx_web=sphinx_web, readthedocs_web=readthedocs_web %}Built with {{ sphinx_web }} using a{% endtrans %} <a href="https://github.com/espressif/sphinx_idf_theme">{% trans %}theme{% endtrans %}</a> {% trans %} based on {{ readthedocs_theme }}{% endtrans %}.
-  {%- endif %}
+    </li>
+    {%- endif %}
+
+    <li class="footer-aside">
+        <a href="{{ pathto('', 1) }}{{ pdf_file }}.pdf" class="fa fa-file-pdf-o"> {{ _('Download PDF') }}</a>
+    </li>
+
+  </ul>
 
   {%- block extrafooter %} {% endblock %}
 

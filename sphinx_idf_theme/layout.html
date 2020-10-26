@@ -59,7 +59,8 @@
         {%- endif %}
         {%- if idf_target and idf_targets %}
         DOCUMENTATION_OPTIONS.IDF_TARGET = '{{ idf_target }}';
-        DOCUMENTATION_OPTIONS.IDF_TARGETS = {{ idf_targets|tojson }}
+        DOCUMENTATION_OPTIONS.HAS_IDF_TARGETS = {{ idf_targets|tojson }}
+        DOCUMENTATION_OPTIONS.RELEASE = '{{ release }}';
         {%- endif %}
     </script>
 
@@ -130,20 +131,19 @@
           {% endif %}
           </a>
 
-          {% if theme_display_version %}
-            {% if idf_target %}
-            <div class="version">
-              {{ idf_target_title_dict[idf_target] }}
-            </div>
-            {% endif %}
-
-            <div class="version" title="{{ version }}">
-              {# Use release here for the short docs version #}
-                {{ release }}
+          {% if idf_targets %}
+            <div class="selectors">
+              <select id="target-select" style="width: 150px;">
+                <option value="" disabled selected>Choose target...</option>
+              </select>
             </div>
           {% endif %}
 
-
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;">
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
 
           {% include "searchbox.html" %}
 
@@ -214,7 +214,6 @@
     </section>
 
   </div>
-  {% include "versions.html" %}
 
   <script type="text/javascript">
       jQuery(function () {
