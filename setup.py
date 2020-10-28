@@ -21,9 +21,8 @@ class WebpackBuildCommand(setuptools.command.build_py.build_py):
     """Prefix Python build with Webpack asset build"""
 
     def run(self):
-        if not 'CI' in os.environ:
-            subprocess.run(['npm', 'install'], check=True)
-            subprocess.run(['node_modules/.bin/webpack', '--config', 'webpack.prod.js'], check=True)
+        subprocess.run(['npm', 'install'], check=True)
+        subprocess.run(['node_modules/.bin/webpack', '--config', 'webpack.prod.js'], check=True)
         setuptools.command.build_py.build_py.run(self)
 
 
@@ -89,7 +88,7 @@ FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='sphinx_idf_theme',
-    version='0.2.1',
+    version='0.2.2',
     url='https://github.com/espressif/sphinx_idf_theme/',
     license='MIT',
     author='Dave Snider, Read the Docs, Inc. & contributors, modified by Espressif Systems (Shanghai) Co Ltd',
