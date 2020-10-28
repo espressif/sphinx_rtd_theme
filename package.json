@@ -1,7 +1,7 @@
 {
   "name": "sphinx_idf_theme",
   "main": "js/theme.js",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
