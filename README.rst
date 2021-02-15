@@ -125,7 +125,7 @@ This theme is distributed on PyPI_ and can be installed with ``pip``:
 
 .. code:: console
 
-   $ pip install sphinx-rtd-theme
+   $ pip install sphinx-idf-theme
 
 To use the theme in your Sphinx project, you will need to add the following to
 your ``conf.py`` file:
