@@ -88,7 +88,7 @@ FILE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='sphinx_idf_theme',
-    version='0.2.2',
+    version='0.3.0',
     url='https://github.com/espressif/sphinx_idf_theme/',
     license='MIT',
     author='Dave Snider, Read the Docs, Inc. & contributors, modified by Espressif Systems (Shanghai) Co Ltd',

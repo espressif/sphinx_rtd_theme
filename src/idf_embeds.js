@@ -2,6 +2,8 @@
 var jQuery = (typeof(window) != 'undefined') ? window.jQuery : require('jquery');
 const semver = require('semver');
 
+import {createEndLifeWarning, createOldWarning, createNotStableWarning, createPrereleaseWarning} from "./version_warnings.js";
+
 /* Setup the version and target select defined in layout.html template */
 function setupVersions() {
     jQuery(function ($) {
@@ -13,6 +15,8 @@ function setupVersions() {
         let defaults = DOCUMENTATION_VERSIONS.DEFAULTS;
         let idf_targets = DOCUMENTATION_VERSIONS.IDF_TARGETS;
 
+        /* Default to latest */
+        let current_version = versions[0];
         /* Apply the defaults to each version, where needed */
         for (let i = 0; i < versions.length; i++) {
             let v = versions[i];
@@ -20,6 +24,9 @@ function setupVersions() {
                 if (!(d in v)) {
                     v[d] = defaults[d];
                 }
+            }
+            if (v.name === release) {
+                current_version = v;
             }
         }
 
@@ -153,6 +160,37 @@ function setupVersions() {
         add_target_selector();
         add_version_selector();
 
+        function warnNewVersionAvailable() {
+
+            const stableVersion = getStableVersion();
+            const stableUrl = getVersionUrl(stableVersion.name, stableVersion.has_targets);
+
+            const latestPatch = getLatestPatchVersion(current_version);
+            let latestPatchUrl = '';
+            if (latestPatch) {
+                latestPatchUrl = getVersionUrl(latestPatch.name, latestPatch.has_targets);
+            }
+
+            /* Only versions without warnigns are latest and stable */
+            if (isLatest(current_version) || isStable(current_version)) {
+                return;
+            }
+
+            /* Display a warning if version is considered out of date*/
+            if (current_version.end_of_life) {
+                createEndLifeWarning(stableUrl, stableVersion.name, language);
+            } else if (current_version.old && latestPatch) {
+                createOldWarning(latestPatchUrl, latestPatch.name, language);
+            } else if (isPrerelease(current_version)) {
+                createPrereleaseWarning(stableUrl, stableVersion.name, language);
+            } else if (!isStable(current_version)) {
+                createNotStableWarning(stableUrl, stableVersion.name, language);
+            }
+
+        }
+
+        warnNewVersionAvailable();
+
     });
 }
 
@@ -199,6 +237,28 @@ function getStableVersion() {
     return candidate;
 }
 
+/* Return the latest patch version for a certain release */
+function getLatestPatchVersion(v) {
+    const versions = DOCUMENTATION_VERSIONS.VERSIONS;
+    const patchRange = semver.validRange('~'+  semver.coerce(v.name));
+    for (let i = 0; i < versions.length; i++) {
+        const v = versions[i];
+        /* The non-old version in the patch range is the latest patch */
+        if (semver.satisfies(semver.coerce(v.name), patchRange) && !v.old) {
+            return v;
+        }
+    }
+}
+
+function isStable(v) {
+    const stableVersion = getStableVersion();
+    return (v.name === stableVersion.name);
+}
+
+function isLatest(v) {
+    return (v.name === "latest");
+}
+
 function supportsTarget(version, target) {
     /* No target means only ESP32 is supported */
     if (typeof version.supported_targets == 'undefined') {
@@ -207,7 +267,7 @@ function supportsTarget(version, target) {
     return version.supported_targets.includes(target);
 }
 
-
 if (typeof(window) != 'undefined') {
     setupVersions();
 }
+
