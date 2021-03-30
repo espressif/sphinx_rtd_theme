@@ -162,6 +162,11 @@ function setupVersions() {
 
         function warnNewVersionAvailable() {
 
+            /* Only versions without warnigns are latest and stable */
+            if (isLatest(current_version) || isStable(current_version)) {
+                return;
+            }
+
             const stableVersion = getStableVersion();
             const stableUrl = getVersionUrl(stableVersion.name, stableVersion.has_targets);
 
@@ -169,11 +174,6 @@ function setupVersions() {
             let latestPatchUrl = '';
             if (latestPatch) {
                 latestPatchUrl = getVersionUrl(latestPatch.name, latestPatch.has_targets);
-            }
-
-            /* Only versions without warnigns are latest and stable */
-            if (isLatest(current_version) || isStable(current_version)) {
-                return;
             }
 
             /* Display a warning if version is considered out of date*/

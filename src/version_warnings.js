@@ -1,64 +1,43 @@
-const endOfLifeStringChinese = '翻译';
-const endOfLifeStringEnglish = 'The documentation you are reading is for a version that is end of life. ';
-
-const notMostRecentStringChinese = '翻译';
-const notMostRecentStringEnglish = 'You are not reading the most recent version of this documentation. ';
-
-const preReleaseStringChinese = '翻译';
-const preReleaseStringEnglish = 'You are reading the documentation for a pre-release version. ';
-
-const redirectStableStringChinese = '翻译';
-const redirectStableStringEnglish = ', is the latest stable version';
-
-const redirectUpdatedStringChinese = '翻译';
-const redirectUpdatedStringEnglish = ', is the latest version available for this Major.Minor.X release';
-
+const warnings = {
+    endOfLife:          {en: 'You are reading the documentation for an ESP-IDF release version that is end of life. ',
+                         zh_CN: '当前文档对应的 ESP-IDF 版本支持期限已满，版本停止更新维护。'},
+    notMostRecent:      {en: 'This documentation is not for the latest stable ESP-IDF release version. ',
+                         zh_CN: '当前文档对应的 ESP-IDF 版本不是最新稳定版。'},
+    old:                {en: 'There is a newer bugfix release of this ESP-IDF version. ',
+                         zh_CN: '当前 ESP-IDF 版本已发布新的 Bugfix。'},
+    preRelease:         {en: 'You are reading the documentation for an ESP-IDF pre-release version. ',
+                         zh_CN: '当前文档为 ESP-IDF 预发布版本的配套文档。'},
+    redirectStable:     {en: 'The latest stable version is ',
+                         zh_CN: '最新稳定版本是 '},
+    redirectUpdated:    {en: 'The latest bugfix release is ',
+                         zh_CN: '最新 Bugfix 发布是'},
+}
 
 function createEndLifeWarning(url, name, language) {
     const ref = '<a href="' + url + '">' + name + '</a>';
-    let warningContent = '';
+    const warningContent = '<p> ' + warnings.endOfLife[language] + warnings.redirectStable[language] + ref + '</p>';
 
-    if (language === 'zh_CN') {
-        warningContent = '<p> ' + endOfLifeStringChinese + ref + redirectStableStringChinese + '</p>';
-    } else {
-        warningContent = '<p> ' + endOfLifeStringEnglish + ref + redirectStableStringEnglish + '</p>';
-    }
     createWarning(warningContent);
 }
 
 function createOldWarning(url, name, language) {
     const ref = '<a href="' + url + '">' + name + '</a>';
-    let warningContent = '';
+    const warningContent = '<p> ' + warnings.old[language] + warnings.redirectUpdated[language] + ref + '</p>';
 
-    if (language === 'zh_CN') {
-        warningContent = '<p> ' + notMostRecentStringChinese + ref + redirectUpdatedStringChinese + '</p>';
-    } else {
-        warningContent = '<p> ' + notMostRecentStringEnglish + ref + redirectUpdatedStringEnglish + '</p>';
-    }
     createWarning(warningContent);
 }
 
 function createNotStableWarning(url, name, language) {
     const ref = '<a href="' + url + '">' + name + '</a>';
-    let warningContent = '';
+    const warningContent = '<p> ' + warnings.notMostRecent[language] + warnings.redirectStable[language]  + ref + '</p>';
 
-    if (language === 'zh_CN') {
-        warningContent = '<p> ' + notMostRecentStringChinese + ref + redirectStableStringChinese + '</p>';
-    } else {
-        warningContent = '<p> ' + notMostRecentStringEnglish + ref + redirectStableStringEnglish + '</p>';
-    }
     createWarning(warningContent);
 }
 
 function createPrereleaseWarning(url, name, language) {
     const ref = '<a href="' + url + '">' + name + '</a>';
-    let warningContent = '';
+    const warningContent = '<p> ' + warnings.preRelease[language] + warnings.redirectStable[language] + ref + '</p>';
 
-    if (language === 'zh_CN') {
-        warningContent = '<p> ' + preReleaseStringChinese + ref + redirectStableStringChinese + '</p>';
-    } else {
-        warningContent = '<p> ' + preReleaseStringEnglish + ref + redirectStableStringEnglish + '</p>';
-    }
     createWarning(warningContent);
 }
 
