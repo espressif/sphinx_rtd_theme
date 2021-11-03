@@ -51,16 +51,16 @@ Set the following additional config variables in the Sphinx project:
 Versions file
 ^^^^^^^^^^^^^
 
-The file found at the ``versions_url`` location should be a JavaScript file describing all current versions. It is loaded by JavaScript in the theme and used to build the version switching popup in the bottom left.
+The file found at the ``versions_url`` location should be a JavaScript file describing all current versions. It is loaded by JavaScript in the theme and used to build the target and version switching selector.
 
 The file should take this form:
 
 .. code-block:: javascript
 
     var DOCUMENTATION_VERSIONS = {
-            "DEFAULTS": { "has_targets": false },
+            "DEFAULTS": { "has_targets": false, supported_targets: [] },
             "VERSIONS": [
-                { "name": "latest", "has_targets": true },
+                { "name": "latest", "has_targets": true, supported_targets: [ "esp32", "esp32s2", "esp32s3" ] },
                 { "name": "v4.0" },
                 { "name": "v3.3.1" },
                 { "name": "v3.3", "old": true  },
@@ -90,6 +90,7 @@ Inside the ``DOCUMENTATION_VERSIONS`` object:
   - ``has_targets`` is true if the URLs for these docs have a target element, ie ``<project>/<language>/<version>/<target>``. false if the URL format is ``<project>/<language>/<version>``. A single project can have some versions which include and some which exclude the target URL component, and the theme will try to generate version links that add or drop the ``<target>`` element as applicable.
   - ``old`` is true if this version is not current, will be shown in "Old Versions" section under the main versions.
   - ``pre_release`` is true if this version is a prerelease not a stable release, will be shown in "Prereleases" section under the main versions
+  - ``supported_targets`` list of supported targets used for generating the target selector for this specific version.
 - ``DEFAULTS`` key contains the default values for any keys which are not supplied in an individual version object. This exists as "sugar" to make the file more readable.
 
 

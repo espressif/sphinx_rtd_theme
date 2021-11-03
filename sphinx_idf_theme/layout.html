@@ -53,7 +53,11 @@
     <script type="text/javascript">
         DOCUMENTATION_OPTIONS.PAGENAME = '{{ pagename }}';
         DOCUMENTATION_OPTIONS.PROJECT_SLUG = '{{ project_slug }}';
+
+        {%- if versions_url %}
         DOCUMENTATION_OPTIONS.VERSIONS_URL = '{{ versions_url }}';
+        {%- endif %}
+
         {%- if languages %}
         DOCUMENTATION_OPTIONS.LANGUAGES = {{ languages|tojson }};
         {%- endif %}
@@ -133,14 +137,14 @@
 
           {% if idf_targets %}
             <div class="selectors">
-              <select id="target-select" style="width: 150px;">
+              <select id="target-select" style="width: 150px;" hidden>
                 <option value="" disabled selected>Choose target...</option>
               </select>
             </div>
           {% endif %}
 
           <div class="selectors">
-            <select id="version-select" style="width: 150px;">
+            <select id="version-select" style="width: 150px;" hidden>
               <option value="" disabled selected>Choose version...</option>
             </select>
           </div>

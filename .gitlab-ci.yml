@@ -5,7 +5,7 @@ stages:
 
 variables:
   # Versioned esp-idf-doc env image to use for all document building jobs
-  ESP_IDF_DOC_ENV_IMAGE: $CI_DOCKER_REGISTRY/esp-idf-doc-env:v9
+  ESP_IDF_DOC_ENV_IMAGE: $CI_DOCKER_REGISTRY/esp-idf-doc-env:v4.4-1-v4
   THEME_PATH: $CI_PROJECT_DIR
   IDF_PATH: $CI_PROJECT_DIR/esp-idf
   IDF_REPO: ${GITLAB_SSH_SERVER}/idf/esp-idf.git
@@ -27,6 +27,7 @@ build_dist:
       - dist/*
   script:
     - npm install
+    - pip3 install wheel
     - python3 setup.py build
     - python3 setup.py sdist bdist_wheel
 
@@ -47,7 +48,7 @@ test_dist:
     - cit_add_ssh_key "${GITLAB_KEY_PEM}"
     - git clone "${IDF_REPO}"
     - cd $IDF_PATH && tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)"
-    - ${IDF_PATH}/tools/ci/multirun_with_pyenv.sh -p 3.6.10 pip install $THEME_PATH/dist/*.whl
+    - ${IDF_PATH}/tools/ci/multirun_with_pyenv.sh -p 3.6.13 pip install $THEME_PATH/dist/*.whl
     # Do a test build with build_docs.py to verify that the new package works
     - $THEME_PATH/ci/build_docs.sh
 
@@ -62,7 +63,7 @@ deploy_dist:
   dependencies:
     - build_dist
   script:
-    # Must be run with 3.6.10 env as this is where doc image installed packages
+    # Must be run with 3.6.13 env as this is where doc image installed packages
    - source /opt/pyenv/activate
-   - pyenv global 3.6.10
+   - pyenv global 3.6.13
    - python $THEME_PATH/ci/deploy_dist.py
