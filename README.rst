@@ -43,7 +43,7 @@ Set the following additional config variables in the Sphinx project:
 - ``project_slug`` - short name of the project as a URL slug (ie ``esp-idf``)
 - ``versions_url`` - URL to download the ``versions.js`` file from
 - ``project_homepage`` - URL of the project's main page (GitHub, etc)
-- ``pdf_file`` - URL to the page where the PDF of HTML is stored, relative to the root dir, used for generating the link to download the PDF
+- ``pdf_file`` - Optional, URL to the page where the PDF of HTML is stored, relative to the root dir, used for generating the link to download the PDF
 
 - ``version`` - Standard Sphinx variable, holds the comprehensive version number of the project.
 - ``release`` - This should be the "human readable" version of the ``version``. ``release`` is used in URL slugs, and is used to pattern match inside the Versions file. Currently in ESP-IDF docs, ``release`` is generated using similar sanitization rules to RTD (summary: uses the tag name if available, or branch name if available, or falls back to ``version`` otherwise. ``master`` becomes ``latest``, any branch name with a ``/`` in it becomes a ``-``.)
