@@ -11,9 +11,14 @@ function setupVersions() {
         let language = DOCUMENTATION_OPTIONS.LANGUAGE;
         let idf_target = DOCUMENTATION_OPTIONS.IDF_TARGET;
         let pagename = DOCUMENTATION_OPTIONS.PAGENAME + ".html";
-        let versions = DOCUMENTATION_VERSIONS.VERSIONS;
-        let defaults = DOCUMENTATION_VERSIONS.DEFAULTS;
-        let idf_targets = DOCUMENTATION_VERSIONS.IDF_TARGETS;
+
+        if (typeof DOCUMENTATION_VERSIONS === "undefined") {
+            return
+        }
+
+        let defaults = (DOCUMENTATION_VERSIONS.DEFAULTS) ? DOCUMENTATION_VERSIONS.DEFAULTS : [];
+        let versions = (DOCUMENTATION_VERSIONS.VERSIONS) ? DOCUMENTATION_VERSIONS.VERSIONS : [];
+        let idf_targets = (DOCUMENTATION_VERSIONS.IDF_TARGETS) ? DOCUMENTATION_VERSIONS.IDF_TARGETS : [];
 
         /* Default to latest */
         let current_version = versions[0];
@@ -62,6 +67,7 @@ function setupVersions() {
 
         function add_target_selector() {
             var selectList = document.getElementById("target-select");
+            selectList.hidden = false;
             selectList.onchange = target_sel;
             for (let i = 0; i < idf_targets.length; i++) {
                 let t = idf_targets[i];
@@ -74,6 +80,8 @@ function setupVersions() {
 
         function add_version_selector() {
             var selectList = document.getElementById("version-select");
+            selectList.hidden = false;
+
             selectList.onchange = version_sel;
 
             var cur_ver_added = false;
@@ -158,7 +166,10 @@ function setupVersions() {
         };
 
         add_target_selector();
-        add_version_selector();
+
+        if (versions.length > 0) {
+            add_version_selector();
+        }
 
         function warnNewVersionAvailable() {
 
@@ -188,8 +199,9 @@ function setupVersions() {
             }
 
         }
-
-        warnNewVersionAvailable();
+        if (versions.length > 0) {
+            warnNewVersionAvailable();
+        }
 
     });
 }
