@@ -50,12 +50,20 @@
       (It may be possible to copy documentation_options.js_t from the base theme
     into this theme instead of doing this, but it didn't immediately work.)
     #}
+
+
+    {%- if versions_url.startswith('./') %}
+        {% set absolute_version_url = pathto('', 1) + versions_url %}
+    {%- else %}
+        {% set absolute_version_url = versions_url %}
+    {%- endif %}
+
     <script type="text/javascript">
         DOCUMENTATION_OPTIONS.PAGENAME = '{{ pagename }}';
         DOCUMENTATION_OPTIONS.PROJECT_SLUG = '{{ project_slug }}';
 
         {%- if versions_url %}
-        DOCUMENTATION_OPTIONS.VERSIONS_URL = '{{ versions_url }}';
+        DOCUMENTATION_OPTIONS.VERSIONS_URL = '{{absolute_version_url}}';
         {%- endif %}
 
         {%- if languages %}
@@ -68,7 +76,7 @@
         {%- endif %}
     </script>
 
-    <script type="text/javascript" src="{{ versions_url }}"></script>
+    <script type="text/javascript" src="{{absolute_version_url}}"></script>
 
   {%- endif %}
   {%- endblock %}
