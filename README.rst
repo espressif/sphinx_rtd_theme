@@ -41,7 +41,7 @@ Set the following additional config variables in the Sphinx project:
 - ``idf_target_title_dict`` - Python dictonary which maps from short names of all supported IDF targets (ie ``["esp32", "esp32s2"]``) to full names (ie ``["ESP32", "ESP32-S2"]``).
 - ``languages`` - Python list with short names of all supported languages (ie ``["en", "zh_CN"]``). Must be set to at least one language element (the current project's language)
 - ``project_slug`` - short name of the project as a URL slug (ie ``esp-idf``)
-- ``versions_url`` - URL to download the ``versions.js`` file from
+- ``versions_url`` - URL to download the ``versions.js`` file from, if specified as a relative URL (starts with ./) then it will be downloaded relative to the HTML root folder.
 - ``project_homepage`` - URL of the project's main page (GitHub, etc)
 - ``pdf_file`` - Optional, URL to the page where the PDF of HTML is stored, relative to the root dir, used for generating the link to download the PDF
 
