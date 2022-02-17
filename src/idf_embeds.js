@@ -108,7 +108,7 @@ function setupVersions() {
                 let v = versions[i];
                 if (!v.old && !v.pre_release && !(v.name == "latest")) {
 
-                    if (v.name == stable.name) {
+                    if (stable && v.name == stable.name) {
                         var option_text =  `stable (${stable.name})`;
                     } else {
                         var option_text = versionToBranchName(v.name);
@@ -179,6 +179,11 @@ function setupVersions() {
             }
 
             const stableVersion = getStableVersion();
+
+            if (!stableVersion) {
+                return;
+            }
+
             const stableUrl = getVersionUrl(stableVersion.name, stableVersion.has_targets);
 
             const latestPatch = getLatestPatchVersion(current_version);
@@ -264,7 +269,7 @@ function getLatestPatchVersion(v) {
 
 function isStable(v) {
     const stableVersion = getStableVersion();
-    return (v.name === stableVersion.name);
+    return (stableVersion && v.name === stableVersion.name);
 }
 
 function isLatest(v) {
